@@ -429,14 +429,14 @@
     </button>
     <div class="works-grid" id="worksGrid">
       <div class="work-card">
-        <div class="work-thumb"><img src="images/abm.jpg" alt="Dynamics of Attitude-Opinion Discrepancy"></div>
+        <div class="work-thumb"><img src="images/dynamics.png" alt="Dynamics of Attitude-Opinion Discrepancy"></div>
         <div class="work-card-body">
           <p>Dynamics of Attitude-Opinion Discrepancy</p>
           <a class="work-btn" href="papers/CR_Sohn_2025.pdf" target="_blank">View Paper</a>
         </div>
       </div>
       <div class="work-card">
-        <div class="work-thumb"><img src="images/emotions.jpg" alt="Mapping News Media Attitude Networks"></div>
+        <div class="work-thumb"><img src="images/attitude_networks.png" alt="Mapping News Media Attitude Networks"></div>
         <div class="work-card-body">
           <p>Mapping News Media Attitude Networks</p>
           <a class="work-btn" href="papers/JMCQ_Lee_Sohn_2025.pdf" target="_blank">View Paper</a>
@@ -938,6 +938,20 @@ window.addEventListener('scroll', () => {
     if (a.getAttribute('href') === '#' + cur) a.classList.add('active');
   });
 });
+
+// Recent works horizontal scroll controls
+const worksGrid = document.getElementById('worksGrid');
+const worksLeft = document.getElementById('worksLeft');
+const worksRight = document.getElementById('worksRight');
+if (worksGrid && worksLeft && worksRight) {
+  const scrollAmount = 260;
+  worksLeft.addEventListener('click', () => {
+    worksGrid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  });
+  worksRight.addEventListener('click', () => {
+    worksGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  });
+}
 </script>
 </body>
 </html>
