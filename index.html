@@ -100,10 +100,12 @@
   .hero h1 {
     font-size: 3.5rem; font-weight: 700; color: var(--white);
     line-height: 1.15; margin-bottom: 0.5rem; letter-spacing: -0.5px;
+    text-shadow: 0 6px 24px rgba(0,0,0,0.25);
   }
   .hero h2 {
     font-size: 1rem; font-weight: 300; color: var(--blue-200);
     letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.2rem;
+    text-shadow: 0 3px 14px rgba(0,0,0,0.2);
   }
   .hero-divider {
     width: 60px; height: 1px; background: rgba(255,255,255,0.3);
@@ -114,10 +116,20 @@
     letter-spacing: 0.5px; margin-bottom: 2.5rem;
   }
   .hero-desc {
-    font-size: 0.95rem; color: rgba(255,255,255,0.75);
-    max-width: 650px; margin: 0 auto 1.5rem; line-height: 1.9; text-align: left;
+    font-size: 0.95rem; color: rgba(255,255,255,0.9);
+    max-width: 680px; margin: 0 auto 1.2rem; line-height: 1.85; text-align: left;
+    background: rgba(6, 18, 34, 0.28);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    backdrop-filter: blur(2px);
   }
-  .hero-desc.kr { color: rgba(255,255,255,0.5); font-size: 0.88rem; margin-bottom: 2.5rem; }
+  .hero-desc.kr {
+    color: rgba(255,255,255,0.78);
+    font-size: 0.88rem;
+    margin-bottom: 2.5rem;
+    background: rgba(6, 18, 34, 0.22);
+  }
   .hero-cta {
     display: inline-flex; align-items: center; gap: 0.5rem;
     padding: 0.8rem 2rem; background: var(--blue-400);
@@ -181,13 +193,20 @@
   .work-thumb img {
     width: 100%; height: 100%; object-fit: cover;
   }
-  .work-thumb img.fit-contain {
+  .work-thumb img.fit-figure {
     object-fit: contain;
     object-position: center;
     background: var(--white);
   }
   .work-card-body { padding: 1.25rem; }
   .work-card-body p { font-size: 0.85rem; font-weight: 600; color: var(--blue-700); line-height: 1.5; }
+  .work-meta {
+    margin-top: 0.35rem;
+    font-size: 0.72rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
   .work-card-body .work-btn {
     display: inline-block; margin-top: 0.75rem; font-size: 0.72rem;
     color: var(--blue-500); font-weight: 600; text-transform: uppercase;
@@ -212,7 +231,12 @@
   .works-arrow svg { width: 16px; height: 16px; color: var(--blue-600); }
 
   /* SECTIONS */
-  section { padding: 6rem 2rem; }
+  section { padding: 5.5rem 2rem; }
+  #about { padding-top: 6.2rem; padding-bottom: 6.2rem; }
+  #people { padding-top: 5.8rem; padding-bottom: 6.4rem; }
+  #publications { padding-top: 5.8rem; padding-bottom: 6rem; }
+  #courses { padding-top: 5.4rem; padding-bottom: 5.8rem; }
+  #contact { padding-top: 5.2rem; padding-bottom: 5.6rem; }
   .container { max-width: 1000px; margin: 0 auto; }
   .section-label {
     font-size: 0.7rem; font-weight: 600; color: var(--blue-500);
@@ -229,6 +253,14 @@
 
   /* ABOUT */
   #about { background: var(--white); }
+  .swipe-hint {
+    display: none;
+    margin-top: 0.9rem;
+    font-size: 0.72rem;
+    color: var(--gray-500);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
   .about-block { margin-bottom: 2.5rem; }
   .about-block h3 {
     font-size: 1.05rem; font-weight: 600; color: var(--blue-700);
@@ -367,8 +399,12 @@
     .nav-toggle { display: block; }
     .hero h1 { font-size: 2.2rem; }
     .hero h2 { font-size: 0.8rem; }
+    .hero-desc { padding: 0.9rem 0.9rem; }
     .stats-inner { flex-wrap: wrap; gap: 2rem; }
     .works-arrow { display: none; }
+    .works-grid { padding-right: 2rem; }
+    .work-card { min-width: 82vw; max-width: 82vw; }
+    .swipe-hint { display: block; }
     .course-grid { grid-template-columns: 1fr; }
     .contact-grid { grid-template-columns: 1fr; }
     .person { flex-direction: column; }
@@ -382,10 +418,10 @@
   <div class="nav-inner">
     <div class="nav-logo-group">
       <!-- 한양대 로고: images/hanyang_logo.png 파일을 넣으면 표시됩니다 -->
-      <a class="nav-univ-link" href="https://www.hanyang.ac.kr/" target="_blank" rel="noopener noreferrer" aria-label="Go to Hanyang University website">
+      <a class="nav-univ-link" href="https://www.hanyang.ac.kr/" target="_blank" rel="noopener noreferrer" aria-label="Go to Hanyang University website" title="Hanyang University">
         <img src="images/HYU_logo.png" alt="Hanyang University" onerror="this.style.display='none'">
       </a>
-      <a href="#home" class="nav-logo">MERG <span>LAB</span></a>
+      <a href="#home" class="nav-logo" title="Back to top">MERG <span>LAB</span></a>
     </div>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home">Home</a></li>
@@ -434,23 +470,26 @@
     </button>
     <div class="works-grid" id="worksGrid">
       <div class="work-card">
-        <div class="work-thumb"><img src="images/dynamics.png" alt="Dynamics of Attitude-Opinion Discrepancy"></div>
+        <div class="work-thumb"><img class="fit-figure" src="images/dynamics.png" alt="Dynamics of Attitude-Opinion Discrepancy"></div>
         <div class="work-card-body">
           <p>Dynamics of Attitude-Opinion Discrepancy</p>
+          <div class="work-meta">CR | 2025</div>
           <a class="work-btn" href="papers/CR_Sohn_2025.pdf" target="_blank">View Paper</a>
         </div>
       </div>
       <div class="work-card">
-        <div class="work-thumb"><img src="images/attitude_networks.png" alt="Mapping News Media Attitude Networks"></div>
+        <div class="work-thumb"><img class="fit-figure" src="images/attitude_networks.png" alt="Mapping News Media Attitude Networks"></div>
         <div class="work-card-body">
           <p>Mapping News Media Attitude Networks</p>
+          <div class="work-meta">JMCQ | 2025</div>
           <a class="work-btn" href="papers/JMCQ_Lee_Sohn_2025.pdf" target="_blank">View Paper</a>
         </div>
       </div>
       <div class="work-card">
-        <div class="work-thumb"><img class="fit-contain" src="images/silence.png" alt="Communication Inequality in Social Media"></div>
+        <div class="work-thumb"><img class="fit-figure" src="images/silence.png" alt="Communication Inequality in Social Media"></div>
         <div class="work-card-body">
           <p>Communication Inequality in Social Media</p>
+          <div class="work-meta">SMCR | 2023</div>
           <a class="work-btn" href="papers/SSCR_Sohn_Choi_2023.pdf" target="_blank">View Paper</a>
         </div>
       </div>
@@ -458,6 +497,7 @@
         <div class="work-thumb"><img src="images/abm.jpg" alt="Agent-Based Simulations of Public Opinion"></div>
         <div class="work-card-body">
           <p>Agent-Based Simulations of Public Opinion</p>
+          <div class="work-meta">CR | 2022</div>
           <a class="work-btn" href="papers/CR_Sohn_2022.pdf" target="_blank">View Paper</a>
         </div>
       </div>
@@ -465,6 +505,7 @@
         <div class="work-thumb"><img src="images/emotions.jpg" alt="Mapping Emotions Using Social Media Data"></div>
         <div class="work-card-body">
           <p>Mapping Emotions Using Social Media Data</p>
+          <div class="work-meta">SMCR | 2022</div>
           <a class="work-btn" href="papers/SSCR_Choi_Kim_Sohn_2022.pdf" target="_blank">View Paper</a>
         </div>
       </div>
@@ -472,10 +513,12 @@
         <div class="work-thumb"><img src="images/persuasion.jpg" alt="Persuasion in Social Networks"></div>
         <div class="work-card-body">
           <p>Persuasion in Social Networks</p>
+          <div class="work-meta">IJA | 2019</div>
           <a class="work-btn" href="papers/IJA_Sohn_Choi_2019.pdf" target="_blank">View Paper</a>
         </div>
       </div>
     </div>
+    <div class="swipe-hint">Swipe to explore recent works</div>
     </div>
   </div>
 </div>
