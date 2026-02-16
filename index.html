@@ -80,9 +80,9 @@
 
   /* HERO */
   .hero {
-    min-height: 78vh; display: flex; align-items: flex-start; justify-content: center;
+    min-height: 66vh; display: flex; align-items: flex-start; justify-content: center;
     background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 50%, var(--blue-600) 100%);
-    position: relative; overflow: hidden; padding: 5.1rem 2rem 2.2rem;
+    position: relative; overflow: hidden; padding: 4.8rem 2rem 1rem;
   }
   .hero::before {
     content: ''; position: absolute; inset: 0;
@@ -97,7 +97,7 @@
     justify-content: center;
     gap: 0.42rem;
     text-align: left;
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.1rem;
   }
   .hero-title-stack {
     display: flex;
@@ -153,24 +153,33 @@
   }
   .hero-desc {
     font-size: 0.99rem; color: rgba(255,255,255,0.9);
-    max-width: none; margin: 0; line-height: 1.85; text-align: left;
-    background: rgba(6, 18, 34, 0.28);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 1rem 1.1rem;
-    backdrop-filter: blur(2px);
+    max-width: none; margin: 0; line-height: 1.78; text-align: left;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    backdrop-filter: none;
   }
   .hero-intro-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.85rem;
-    margin-bottom: 1rem;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.9rem;
+    margin-bottom: 0;
+    background: rgba(6, 18, 34, 0.28);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 0.95rem 1.05rem;
+    backdrop-filter: blur(2px);
+  }
+  .hero-intro-divider {
+    width: 1px;
+    background: rgba(255,255,255,0.22);
   }
   .hero-desc.kr {
     color: rgba(255,255,255,0.78);
     font-size: 0.92rem;
     margin-bottom: 0;
-    background: rgba(6, 18, 34, 0.22);
+    background: transparent;
   }
   .hero-cta {
     display: inline-flex; align-items: center; gap: 0.5rem;
@@ -454,7 +463,7 @@
       box-shadow: 0 8px 30px rgba(10,22,40,0.08);
     }
     .nav-toggle { display: block; }
-    .hero { min-height: auto; padding: 5rem 1rem 2rem; }
+    .hero { min-height: auto; padding: 5rem 1rem 1.2rem; }
     .hero-content { max-width: 92vw; }
     .hero-head {
       flex-direction: column;
@@ -467,8 +476,9 @@
     .hero h2 { font-size: 0.7rem; white-space: normal; }
     .hero-rail { width: 100%; height: 1px; }
     .hero-lab-meta div { font-size: 0.62rem; }
-    .hero-intro-grid { grid-template-columns: 1fr; gap: 0.65rem; margin-bottom: 0.8rem; }
-    .hero-desc { padding: 0.9rem 0.9rem; }
+    .hero-intro-grid { grid-template-columns: 1fr; gap: 0.65rem; margin-bottom: 0.2rem; padding: 0.85rem 0.9rem; }
+    .hero-intro-divider { width: 100%; height: 1px; }
+    .hero-desc { padding: 0; }
     .stats-inner { flex-wrap: wrap; gap: 2rem; }
     .works-arrow { display: none; }
     .works-grid { padding-right: 2rem; }
@@ -523,6 +533,7 @@
     </div>
     <div class="hero-intro-grid">
       <p class="hero-desc">The <strong style="color:rgba(255,255,255,0.95)">MERG (pronounced "merge") Lab</strong> at Hanyang University studies how individual interactions in digital media environments produce macro social outcomes such as information diffusion, persuasion, norm change, and public opinion dynamics. Using data analytics and simulation, MERG Lab investigates the <strong style="color:rgba(255,255,255,0.95)">micro-foundations of collective communication patterns</strong>.</p>
+      <div class="hero-intro-divider" aria-hidden="true"></div>
       <p class="hero-desc kr">한양대학교 미디어 생태/관계 역학 연구실(MERG LAB, "merge"로 읽음)은 디지털 미디어 환경에서 개인 간 상호작용이 정보확산, 설득, 규범 변화, 여론 동학 같은 거시적 사회현상으로 이어지는 과정을 연구합니다. 데이터 분석과 시뮬레이션 방법을 통해 <strong style="color:rgba(255,255,255,0.7)">집합적 커뮤니케이션 현상의 미시적 조건</strong>을 체계적으로 탐구합니다.</p>
     </div>
   </div>
