@@ -90,12 +90,20 @@
                 radial-gradient(circle at 70% 80%, rgba(107,163,232,0.1) 0%, transparent 50%);
   }
   .hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-  .hero-content { position: relative; text-align: center; max-width: 800px; z-index: 2; }
+  .hero-content { position: relative; text-align: center; max-width: 920px; z-index: 2; }
   .hero-head {
-    display: grid;
-    justify-items: center;
-    gap: 0.7rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1rem;
+    text-align: left;
     margin-bottom: 1.8rem;
+  }
+  .hero-title-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: min(100%, 32rem);
   }
   .hero-badge {
     display: inline-block; padding: 0.4rem 1.2rem;
@@ -105,25 +113,43 @@
   }
   .hero h1 {
     font-size: 3.5rem; font-weight: 700; color: var(--white);
-    line-height: 1.05; margin-bottom: 0; letter-spacing: -0.6px;
+    line-height: 1.05; margin-bottom: 0;
+    letter-spacing: 0.42rem;
+    white-space: nowrap;
     text-shadow: 0 6px 24px rgba(0,0,0,0.25);
   }
   .hero h2 {
-    font-size: 0.95rem; font-weight: 500; color: var(--blue-100);
-    letter-spacing: 0.8px; text-transform: none; margin-bottom: 0;
-    padding: 0.35rem 0.85rem;
-    border: 1px solid rgba(255,255,255,0.24);
-    border-radius: 999px;
-    background: rgba(255,255,255,0.08);
+    font-size: 0.78rem; font-weight: 500; color: var(--blue-100);
+    letter-spacing: 1.7px; text-transform: uppercase; margin-bottom: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    white-space: nowrap;
     text-shadow: 0 3px 14px rgba(0,0,0,0.2);
   }
   .hero-divider {
-    width: 60px; height: 1px; background: rgba(255,255,255,0.3);
-    margin: 0 auto 1rem;
+    width: 100%; height: 1px; background: rgba(255,255,255,0.34);
+    margin: 0.25rem 0 0.45rem 0;
   }
-  .hero-affiliation {
-    font-size: 0.8rem; color: rgba(255,255,255,0.75);
-    letter-spacing: 0.3px; margin-bottom: 0.4rem;
+  .hero-rail {
+    width: 1px;
+    height: 70px;
+    background: rgba(255,255,255,0.35);
+    margin-bottom: 0.1rem;
+  }
+  .hero-lab-meta {
+    display: grid;
+    gap: 0.28rem;
+    margin-bottom: 0.12rem;
+  }
+  .hero-lab-meta div {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    color: rgba(255,255,255,0.82);
+    text-transform: uppercase;
+    white-space: nowrap;
   }
   .hero-desc {
     font-size: 0.95rem; color: rgba(255,255,255,0.9);
@@ -407,8 +433,19 @@
       box-shadow: 0 8px 30px rgba(10,22,40,0.08);
     }
     .nav-toggle { display: block; }
-    .hero h1 { font-size: 2.2rem; }
-    .hero h2 { font-size: 0.78rem; }
+    .hero-content { max-width: 92vw; }
+    .hero-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+    .hero-title-stack { width: 100%; }
+    .hero h1 { font-size: 2.2rem; letter-spacing: 0.2rem; }
+    .hero h2 { font-size: 0.7rem; white-space: normal; }
+    .hero-divider { margin: 0.2rem 0 0.4rem 0; }
+    .hero-rail { width: 100%; height: 1px; }
+    .hero-lab-meta div { font-size: 0.62rem; }
     .hero-desc { padding: 0.9rem 0.9rem; }
     .stats-inner { flex-wrap: wrap; gap: 2rem; }
     .works-arrow { display: none; }
@@ -452,10 +489,16 @@
   <canvas class="hero-canvas" id="networkCanvas"></canvas>
   <div class="hero-content">
     <div class="hero-head">
-      <h1>MERG LAB</h1>
-      <div class="hero-divider"></div>
-      <h2>Media Ecology & Relational Governance Lab</h2>
-      <div class="hero-affiliation">Hanyang University, Seoul, Korea</div>
+      <div class="hero-title-stack">
+        <h1>MERG LAB</h1>
+        <div class="hero-divider"></div>
+        <h2>Media Ecology & Relational Governance Lab</h2>
+      </div>
+      <div class="hero-rail" aria-hidden="true"></div>
+      <div class="hero-lab-meta">
+        <div>Media & Communication</div>
+        <div>Hanyang University-Seoul</div>
+      </div>
     </div>
     <p class="hero-desc">The <strong style="color:rgba(255,255,255,0.95)">MERG (pronounced "merge") Lab</strong> at Hanyang University is dedicated to investigating the interactions between individuals and their macro-level outcomes. These outcomes include phenomena such as information diffusion, mass persuasion, shifts in social norms, and the dynamics of public opinion, particularly within the context of digital media. By employing methodologies such as data analytics and simulations, MERG Lab aims to deepen our understanding of <strong style="color:rgba(255,255,255,0.95)">the micro-foundations of macro social behaviors</strong> — the essential psychological and network-structural conditions that underlie the emergence, persistence, or transformation of various collective communication patterns.</p>
     <p class="hero-desc kr">한양대학교 미디어 생태/관계 역학 연구실(MERG LAB)에 오신 것을 환영합니다. 동사 merge가 '합치다, 결합하다'를 의미하듯 MERG LAB은 네트워크 미디어 환경에서 개인들이 주변 환경과 상호작용하고 상호 영향을 주고받는 미시적 과정과 그로부터 창발(emergence)하는 집합적 현상(e.g., 여론동학, 정보확산, 설득커뮤니케이션, 규범형성)을 연구합니다. 다양한 실험 및 데이터 분석과 컴퓨터 시뮬레이션 방법을 통해 MERG LAB은 <strong style="color:rgba(255,255,255,0.7)">거시적 사회현상의 미시적 조건</strong>, 즉 소셜미디어와 같은 네트워크 환경에서 일어나는 다양한 집합적 사회 현상 기저의 사회심리적 상호작용과 네트워크 구조의 역할에 대한 체계적 이해를 목표로 합니다.</p>
