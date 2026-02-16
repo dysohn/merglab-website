@@ -80,9 +80,9 @@
 
   /* HERO */
   .hero {
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    min-height: 78vh; display: flex; align-items: flex-start; justify-content: center;
     background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 50%, var(--blue-600) 100%);
-    position: relative; overflow: hidden; padding: 6rem 2rem 4rem;
+    position: relative; overflow: hidden; padding: 5.1rem 2rem 2.2rem;
   }
   .hero::before {
     content: ''; position: absolute; inset: 0;
@@ -153,17 +153,23 @@
   }
   .hero-desc {
     font-size: 0.99rem; color: rgba(255,255,255,0.9);
-    max-width: 680px; margin: 0 auto 1.2rem; line-height: 1.85; text-align: left;
+    max-width: none; margin: 0; line-height: 1.85; text-align: left;
     background: rgba(6, 18, 34, 0.28);
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 10px;
     padding: 1rem 1.1rem;
     backdrop-filter: blur(2px);
   }
+  .hero-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+  }
   .hero-desc.kr {
     color: rgba(255,255,255,0.78);
     font-size: 0.92rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 0;
     background: rgba(6, 18, 34, 0.22);
   }
   .hero-cta {
@@ -173,6 +179,7 @@
     border-radius: 6px; font-size: 0.85rem; font-weight: 500;
     transition: background 0.2s; letter-spacing: 0.3px;
   }
+  .hero-cta { margin-top: 0.7rem; }
   .hero-cta:hover { background: var(--blue-500); }
   .hero-cta svg { width: 16px; height: 16px; }
 
@@ -197,7 +204,7 @@
 
   /* RECENT WORKS */
   .recent-section {
-    background: var(--gray-100); padding: 5rem 2rem;
+    background: var(--gray-100); padding: 4rem 2rem 5rem;
   }
   .recent-inner { max-width: 1000px; margin: 0 auto; }
   .recent-inner .section-label {
@@ -447,6 +454,7 @@
       box-shadow: 0 8px 30px rgba(10,22,40,0.08);
     }
     .nav-toggle { display: block; }
+    .hero { min-height: auto; padding: 5rem 1rem 2rem; }
     .hero-content { max-width: 92vw; }
     .hero-head {
       flex-direction: column;
@@ -459,6 +467,7 @@
     .hero h2 { font-size: 0.7rem; white-space: normal; }
     .hero-rail { width: 100%; height: 1px; }
     .hero-lab-meta div { font-size: 0.62rem; }
+    .hero-intro-grid { grid-template-columns: 1fr; gap: 0.65rem; margin-bottom: 0.8rem; }
     .hero-desc { padding: 0.9rem 0.9rem; }
     .stats-inner { flex-wrap: wrap; gap: 2rem; }
     .works-arrow { display: none; }
@@ -512,8 +521,10 @@
         <div>Hanyang University-Seoul</div>
       </div>
     </div>
-    <p class="hero-desc">The <strong style="color:rgba(255,255,255,0.95)">MERG (pronounced "merge") Lab</strong> at Hanyang University is dedicated to investigating the interactions between individuals and their macro-level outcomes. These outcomes include phenomena such as information diffusion, mass persuasion, shifts in social norms, and the dynamics of public opinion, particularly within the context of digital media. By employing methodologies such as data analytics and simulations, MERG Lab aims to deepen our understanding of <strong style="color:rgba(255,255,255,0.95)">the micro-foundations of macro social behaviors</strong> — the essential psychological and network-structural conditions that underlie the emergence, persistence, or transformation of various collective communication patterns.</p>
-    <p class="hero-desc kr">한양대학교 미디어 생태/관계 역학 연구실(MERG LAB)에 오신 것을 환영합니다. 동사 merge가 '합치다, 결합하다'를 의미하듯 MERG LAB은 네트워크 미디어 환경에서 개인들이 주변 환경과 상호작용하고 상호 영향을 주고받는 미시적 과정과 그로부터 창발(emergence)하는 집합적 현상(e.g., 여론동학, 정보확산, 설득커뮤니케이션, 규범형성)을 연구합니다. 다양한 실험 및 데이터 분석과 컴퓨터 시뮬레이션 방법을 통해 MERG LAB은 <strong style="color:rgba(255,255,255,0.7)">거시적 사회현상의 미시적 조건</strong>, 즉 소셜미디어와 같은 네트워크 환경에서 일어나는 다양한 집합적 사회 현상 기저의 사회심리적 상호작용과 네트워크 구조의 역할에 대한 체계적 이해를 목표로 합니다.</p>
+    <div class="hero-intro-grid">
+      <p class="hero-desc">The <strong style="color:rgba(255,255,255,0.95)">MERG (pronounced "merge") Lab</strong> at Hanyang University is dedicated to investigating the interactions between individuals and their macro-level outcomes. These outcomes include phenomena such as information diffusion, mass persuasion, shifts in social norms, and the dynamics of public opinion, particularly within the context of digital media. By employing methodologies such as data analytics and simulations, MERG Lab aims to deepen our understanding of <strong style="color:rgba(255,255,255,0.95)">the micro-foundations of macro social behaviors</strong> — the essential psychological and network-structural conditions that underlie the emergence, persistence, or transformation of various collective communication patterns.</p>
+      <p class="hero-desc kr">한양대학교 미디어 생태/관계 역학 연구실(MERG LAB)에 오신 것을 환영합니다. 동사 merge가 '합치다, 결합하다'를 의미하듯 MERG LAB은 네트워크 미디어 환경에서 개인들이 주변 환경과 상호작용하고 상호 영향을 주고받는 미시적 과정과 그로부터 창발(emergence)하는 집합적 현상(e.g., 여론동학, 정보확산, 설득커뮤니케이션, 규범형성)을 연구합니다. 다양한 실험 및 데이터 분석과 컴퓨터 시뮬레이션 방법을 통해 MERG LAB은 <strong style="color:rgba(255,255,255,0.7)">거시적 사회현상의 미시적 조건</strong>, 즉 소셜미디어와 같은 네트워크 환경에서 일어나는 다양한 집합적 사회 현상 기저의 사회심리적 상호작용과 네트워크 구조의 역할에 대한 체계적 이해를 목표로 합니다.</p>
+    </div>
     <a href="#about" class="hero-cta">
       Learn More
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
