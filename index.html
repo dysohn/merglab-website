@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERG LAB | Media Ecology & Relational Governance Lab | Hanyang University</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue-900: #0a1628;
+    --blue-800: #0d2240;
+    --blue-700: #0f3460;
+    --blue-600: #1a4a8a;
+    --blue-500: #1e56a0;
+    --blue-400: #3a7bd5;
+    --blue-300: #6ba3e8;
+    --blue-200: #a8ccf0;
+    --blue-100: #dce9f7;
+    --blue-50: #f0f5fc;
+    --gray-900: #1a1a2e;
+    --gray-700: #4a4a5a;
+    --gray-500: #7a7a8a;
+    --gray-300: #c4c4d0;
+    --gray-100: #f4f4f8;
+    --white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans KR', -apple-system, sans-serif;
+    color: var(--gray-900);
+    line-height: 1.7;
+    background: var(--white);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--blue-100);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(10,22,40,0.08); }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px;
+  }
+  .nav-logo-group {
+    display: flex; align-items: center; gap: 0.75rem;
+    text-decoration: none;
+  }
+  .nav-logo-group img {
+    height: 38px; width: auto;
+  }
+  .nav-logo {
+    font-size: 1.1rem; font-weight: 700; color: var(--blue-700);
+    text-decoration: none; letter-spacing: 0.5px;
+  }
+  .nav-logo span { color: var(--blue-400); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--gray-700);
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.3px; transition: color 0.2s;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--blue-500); }
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+  .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--gray-700); margin: 5px 0; transition: 0.3s; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 50%, var(--blue-600) 100%);
+    position: relative; overflow: hidden; padding: 6rem 2rem 4rem;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(58,123,213,0.15) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(107,163,232,0.1) 0%, transparent 50%);
+  }
+  .hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .hero-content { position: relative; text-align: center; max-width: 800px; z-index: 2; }
+  .hero-badge {
+    display: inline-block; padding: 0.4rem 1.2rem;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50px; font-size: 0.75rem; color: var(--blue-200);
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-size: 3.5rem; font-weight: 700; color: var(--white);
+    line-height: 1.15; margin-bottom: 0.5rem; letter-spacing: -0.5px;
+  }
+  .hero h2 {
+    font-size: 1rem; font-weight: 300; color: var(--blue-200);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.2rem;
+  }
+  .hero-divider {
+    width: 60px; height: 1px; background: rgba(255,255,255,0.3);
+    margin: 0 auto 1rem;
+  }
+  .hero-affiliation {
+    font-size: 0.85rem; color: rgba(255,255,255,0.5);
+    letter-spacing: 0.5px; margin-bottom: 2.5rem;
+  }
+  .hero-desc {
+    font-size: 0.95rem; color: rgba(255,255,255,0.75);
+    max-width: 650px; margin: 0 auto 1.5rem; line-height: 1.9; text-align: left;
+  }
+  .hero-desc.kr { color: rgba(255,255,255,0.5); font-size: 0.88rem; margin-bottom: 2.5rem; }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.8rem 2rem; background: var(--blue-400);
+    color: var(--white); text-decoration: none;
+    border-radius: 6px; font-size: 0.85rem; font-weight: 500;
+    transition: background 0.2s; letter-spacing: 0.3px;
+  }
+  .hero-cta:hover { background: var(--blue-500); }
+  .hero-cta svg { width: 16px; height: 16px; }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--white); border-bottom: 1px solid var(--blue-100);
+    padding: 2.5rem 2rem;
+  }
+  .stats-inner {
+    max-width: 1000px; margin: 0 auto;
+    display: flex; justify-content: center; gap: 4rem;
+  }
+  .stat { text-align: center; }
+  .stat-number {
+    font-size: 2rem; font-weight: 700; color: var(--blue-600);
+    line-height: 1.2;
+  }
+  .stat-label {
+    font-size: 0.75rem; color: var(--gray-500); text-transform: uppercase;
+    letter-spacing: 1px; margin-top: 0.3rem;
+  }
+
+  /* RECENT WORKS */
+  .recent-section {
+    background: var(--gray-100); padding: 5rem 2rem;
+  }
+  .recent-inner { max-width: 1000px; margin: 0 auto; }
+  .recent-inner .section-label {
+    font-size: 0.7rem; font-weight: 600; color: var(--blue-500);
+    letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .recent-inner .section-title {
+    font-size: 2rem; font-weight: 700; color: var(--gray-900);
+    margin-bottom: 2.5rem; letter-spacing: -0.3px;
+  }
+  .works-scroll-wrap { position: relative; }
+  .works-grid {
+    display: flex; gap: 1.25rem; overflow-x: auto;
+    scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding-bottom: 0.5rem;
+  }
+  .works-grid::-webkit-scrollbar { display: none; }
+  .work-card {
+    background: var(--white); border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--blue-100); transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none; color: inherit; display: block;
+    min-width: 240px; max-width: 240px; flex-shrink: 0;
+  }
+  .work-card:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(10,22,40,0.1); }
+  .work-thumb {
+    height: 160px; position: relative; overflow: hidden;
+    background: var(--blue-50);
+  }
+  .work-thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .work-card-body { padding: 1.25rem; }
+  .work-card-body p { font-size: 0.85rem; font-weight: 600; color: var(--blue-700); line-height: 1.5; }
+  .work-card-body .work-btn {
+    display: inline-block; margin-top: 0.75rem; font-size: 0.72rem;
+    color: var(--blue-500); font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; text-decoration: none;
+    padding: 0.35rem 0.8rem; border: 1px solid var(--blue-200);
+    border-radius: 4px; transition: background 0.2s, color 0.2s;
+  }
+  .work-card-body .work-btn:hover {
+    background: var(--blue-500); color: var(--white);
+  }
+  .works-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.9); border: 1px solid var(--blue-100);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; transition: box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(10,22,40,0.08);
+  }
+  .works-arrow:hover { box-shadow: 0 4px 15px rgba(10,22,40,0.15); }
+  .works-arrow-left { left: -18px; }
+  .works-arrow-right { right: -18px; }
+  .works-arrow svg { width: 16px; height: 16px; color: var(--blue-600); }
+
+  /* SECTIONS */
+  section { padding: 6rem 2rem; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.7rem; font-weight: 600; color: var(--blue-500);
+    letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: 2rem; font-weight: 700; color: var(--gray-900);
+    margin-bottom: 1rem; letter-spacing: -0.3px;
+  }
+  .section-desc {
+    font-size: 1rem; color: var(--gray-500); max-width: 600px;
+    margin-bottom: 3rem; line-height: 1.8;
+  }
+
+  /* ABOUT */
+  #about { background: var(--white); }
+  .about-block { margin-bottom: 2.5rem; }
+  .about-block h3 {
+    font-size: 1.05rem; font-weight: 600; color: var(--blue-700);
+    margin-bottom: 0.75rem; padding-left: 1rem;
+    border-left: 3px solid var(--blue-400);
+  }
+  .about-block p { font-size: 0.9rem; color: var(--gray-700); line-height: 1.85; margin-bottom: 0.5rem; }
+  .about-block .kr { font-size: 0.85rem; color: var(--gray-500); line-height: 1.85; }
+
+  .themes { margin-top: 3rem; }
+  .themes h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--gray-900); }
+  .theme-tags { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .theme-tag {
+    padding: 0.6rem 1.4rem; background: var(--blue-50);
+    border: 1px solid var(--blue-200); border-radius: 50px;
+    font-size: 0.82rem; color: var(--blue-700); font-weight: 500;
+  }
+
+  .approach-text { margin-top: 3rem; }
+  .approach-text h3 {
+    font-size: 1.05rem; font-weight: 600; color: var(--blue-700);
+    margin-bottom: 0.75rem; padding-left: 1rem;
+    border-left: 3px solid var(--blue-400);
+  }
+  .approach-text p { font-size: 0.9rem; color: var(--gray-700); line-height: 1.85; margin-bottom: 0.5rem; }
+  .approach-text .kr { font-size: 0.85rem; color: var(--gray-500); line-height: 1.85; }
+
+  /* PEOPLE */
+  #people { background: var(--gray-100); }
+  .people-category { margin-bottom: 3rem; }
+  .people-category h3 {
+    font-size: 0.8rem; font-weight: 600; color: var(--blue-500);
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 1.5rem; padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--blue-200);
+  }
+  .person {
+    display: flex; gap: 1.5rem; margin-bottom: 1.5rem;
+    padding: 1.75rem; background: var(--white);
+    border-radius: 12px; align-items: flex-start;
+    border: 1px solid var(--blue-100);
+    transition: box-shadow 0.2s;
+  }
+  .person:hover { box-shadow: 0 4px 20px rgba(10,22,40,0.06); }
+  .person-photo {
+    width: 100px; height: 100px; border-radius: 50%;
+    flex-shrink: 0; overflow: hidden;
+    background: linear-gradient(135deg, var(--blue-200), var(--blue-400));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .person-photo img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .person-photo .initials {
+    font-size: 1.2rem; font-weight: 600; color: var(--white);
+  }
+  .person-info h4 { display: none; }
+  .person-info .person-title { font-size: 0.8rem; color: var(--blue-500); font-weight: 500; margin-bottom: 0.5rem; }
+  .person-info p { font-size: 0.85rem; color: var(--gray-700); line-height: 1.75; }
+
+  /* PUBLICATIONS */
+  #publications { background: var(--white); }
+  .pub-list { list-style: none; }
+  .pub-item {
+    padding: 1.25rem 0; border-bottom: 1px solid var(--blue-100);
+    transition: padding-left 0.2s;
+  }
+  .pub-item:hover { padding-left: 0.5rem; }
+  .pub-item:last-child { border-bottom: none; }
+  .pub-year {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    color: var(--blue-500); background: var(--blue-50);
+    padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.4rem;
+  }
+  .pub-text { font-size: 0.88rem; color: var(--gray-700); line-height: 1.7; }
+  .pub-text em { color: var(--gray-900); }
+
+  /* COURSES */
+  #courses { background: var(--gray-100); }
+  .course-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .course-card {
+    padding: 1.75rem; background: var(--white);
+    border-radius: 12px; border-left: 3px solid var(--blue-400);
+    border-top: 1px solid var(--blue-100);
+    border-right: 1px solid var(--blue-100);
+    border-bottom: 1px solid var(--blue-100);
+    transition: box-shadow 0.2s;
+  }
+  .course-card:hover { box-shadow: 0 4px 20px rgba(10,22,40,0.06); }
+  .course-card h4 { font-size: 0.95rem; font-weight: 600; color: var(--blue-700); margin-bottom: 0.75rem; }
+  .course-card p { font-size: 0.85rem; color: var(--gray-700); line-height: 1.75; }
+
+  /* CONTACT */
+  #contact {
+    background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 100%);
+    color: var(--white);
+  }
+  #contact .section-label { color: var(--blue-300); }
+  #contact .section-title { color: var(--white); }
+  #contact .section-desc { color: var(--blue-200); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .contact-info-block { margin-bottom: 1.5rem; }
+  .contact-info-block h4 {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--blue-300); margin-bottom: 0.5rem;
+  }
+  .contact-info-block p { font-size: 0.95rem; color: rgba(255,255,255,0.85); }
+  .contact-info-block a { color: var(--blue-200); text-decoration: none; }
+  .contact-info-block a:hover { color: var(--white); }
+  .contact-message {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 2rem;
+  }
+  .contact-message h4 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
+  .contact-message p { font-size: 0.88rem; color: rgba(255,255,255,0.7); line-height: 1.8; }
+  .contact-message .kr { font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-top: 1rem; line-height: 1.8; }
+
+  /* FOOTER */
+  footer {
+    background: var(--blue-900); padding: 2rem;
+    text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  footer p { font-size: 0.75rem; color: var(--gray-500); }
+  footer a { color: var(--blue-300); text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: absolute; top: 64px; left: 0; right: 0;
+      background: var(--white); padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--blue-100);
+      box-shadow: 0 8px 30px rgba(10,22,40,0.08);
+    }
+    .nav-toggle { display: block; }
+    .hero h1 { font-size: 2.2rem; }
+    .hero h2 { font-size: 0.8rem; }
+    .stats-inner { flex-wrap: wrap; gap: 2rem; }
+    .works-arrow { display: none; }
+    .course-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .person { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo-group">
+      <!-- 한양대 로고: images/hanyang_logo.png 파일을 넣으면 표시됩니다 -->
+      <img src="images/HYU_logo.png" alt="Hanyang University" onerror="this.style.display='none'">
+      <a href="#home" class="nav-logo">MERG <span>LAB</span></a>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#people">People</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO with animated network -->
+<section class="hero" id="home">
+  <canvas class="hero-canvas" id="networkCanvas"></canvas>
+  <div class="hero-content">
+    <h1>MERG LAB</h1>
+    <h2>Media Ecology & Relational Governance Lab</h2>
+    <div class="hero-divider"></div>
+    <div class="hero-affiliation">DEPARTMENT OF MEDIA & COMMUNICATION, HANYANG UNIVERSITY</div>
+    <p class="hero-desc">The <strong style="color:rgba(255,255,255,0.95)">MERG (pronounced "merge") Lab</strong> at Hanyang University is dedicated to investigating the interactions between individuals and their macro-level outcomes. These outcomes include phenomena such as information diffusion, mass persuasion, shifts in social norms, and the dynamics of public opinion, particularly within the context of digital media. By employing methodologies such as data analytics and simulations, MERG Lab aims to deepen our understanding of <strong style="color:rgba(255,255,255,0.95)">the micro-foundations of macro social behaviors</strong> — the essential psychological and network-structural conditions that underlie the emergence, persistence, or transformation of various collective communication patterns.</p>
+    <p class="hero-desc kr">한양대학교 미디어 생태/관계 역학 연구실(MERG LAB)에 오신 것을 환영합니다. 동사 merge가 '합치다, 결합하다'를 의미하듯 MERG LAB은 네트워크 미디어 환경에서 개인들이 주변 환경과 상호작용하고 상호 영향을 주고받는 미시적 과정과 그로부터 창발(emergence)하는 집합적 현상(e.g., 여론동학, 정보확산, 설득커뮤니케이션, 규범형성)을 연구합니다. 다양한 실험 및 데이터 분석과 컴퓨터 시뮬레이션 방법을 통해 MERG LAB은 <strong style="color:rgba(255,255,255,0.7)">거시적 사회현상의 미시적 조건</strong>, 즉 소셜미디어와 같은 네트워크 환경에서 일어나는 다양한 집합적 사회 현상 기저의 사회심리적 상호작용과 네트워크 구조의 역할에 대한 체계적 이해를 목표로 합니다.</p>
+    <a href="#about" class="hero-cta">
+      Learn More
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </a>
+  </div>
+</section>
+
+
+
+<!-- RECENT WORKS -->
+<div class="recent-section">
+  <div class="recent-inner">
+    <div class="section-label">Featured Research</div>
+    <div class="section-title">Recent Works</div>
+    <div class="works-scroll-wrap">
+    <button class="works-arrow works-arrow-left" id="worksLeft" aria-label="Scroll left">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="works-arrow works-arrow-right" id="worksRight" aria-label="Scroll right">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <div class="works-grid" id="worksGrid">
+      <div class="work-card">
+        <div class="work-thumb"><img src="images/persuasion.jpg" alt="Persuasion in Social Networks"></div>
+        <div class="work-card-body">
+          <p>Persuasion in Social Networks</p>
+          <a class="work-btn" href="https://site.hanyang.ac.kr/documents/12554790/0/Persuasion+in+Social+Networks.pdf/c36d04b9-9a33-69a9-b44b-60488d8dac46?t=1733831642905" target="_blank">View Paper</a>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="images/emotions.jpg" alt="Mapping Emotions Using Social Media Data"></div>
+        <div class="work-card-body">
+          <p>Mapping Emotions Using Social Media Data</p>
+          <a class="work-btn" href="https://site.hanyang.ac.kr/documents/12554790/0/Mapping+Social+Distress.pdf/d349d8b0-416d-1375-368e-154c43e15a9b?t=1733831642430" target="_blank">View Paper</a>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="images/abm.jpg" alt="Agent-Based Simulations of Public Opinion"></div>
+        <div class="work-card-body">
+          <p>Agent-Based Simulations of Public Opinion</p>
+          <a class="work-btn" href="https://site.hanyang.ac.kr/documents/12554790/0/Agent-Based+Simulations.pdf/e4ba4d8e-017f-411f-e1ff-586d7252d762?t=1733831641945" target="_blank">View Paper</a>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="images/silence.jpg" alt="Silence in Social Media"></div>
+        <div class="work-card-body">
+          <p>Silence in Social Media</p>
+          <a class="work-btn" href="https://site.hanyang.ac.kr/documents/12554790/0/Silence+in+Social+Media.pdf/f3f13058-4452-6b42-19c2-1aebba2f8077?t=1733831643410" target="_blank">View Paper</a>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About</div>
+    <div class="section-title">About MERG LAB</div>
+
+    <div class="about-block">
+      <h3>Our Starting Point: Media as Environment</h3>
+      <p>Rather than treating media as isolated channels or stimuli, MERG Lab starts from the premise that media constitute environments. Networked media environments shape what individuals perceive as relevant, credible, and actionable, thereby conditioning how judgments and social coordination are formed.</p>
+      <p class="kr">MERG Lab은 미디어를 개별 메시지나 자극이 아니라 개인이 인식하고 판단하며 상호작용하는 환경으로 봅니다. 네트워크화된 미디어 환경은 무엇이 중요하고, 신뢰할 만하며, 행동할 가치가 있는지를 규정하는 조건으로 작동합니다.</p>
+    </div>
+
+    <div class="about-block">
+      <h3>From Individuals to Collective Order</h3>
+      <p>A central concern of the lab is the micro–macro linkage between individual-level cognition and interaction and macro-level social outcomes. We are particularly interested in how local adaptations—such as changes in judgment criteria or decision rules—accumulate into collective patterns without centralized coordination.</p>
+      <p class="kr">MERG Lab의 핵심 문제의식은 개인 수준의 인지와 상호작용이 어떻게 집합적 사회 질서로 이어지는가입니다. 판단 기준의 조정이나 의사결정 규칙의 변화 같은 국지적 적응이 중앙의 통제 없이도 여론, 규범, 신뢰, 거버넌스로 이어지는 과정을 탐구합니다.</p>
+    </div>
+
+    <div class="about-block">
+      <h3>Relational Governance as an Emergent Process</h3>
+      <p>In this context, governance is understood not as formal control, but as an emergent relational process. Patterns of coordination, norms, and regulation arise from repeated interactions among individuals embedded in specific network environments. MERG Lab examines how different network structures enable or constrain such relational governance.</p>
+      <p class="kr">MERG Lab에서 말하는 거버넌스는 제도적 통치가 아니라 관계적 상호작용 속에서 창발하는 과정을 의미합니다. 특정 네트워크 환경에서 반복되는 상호작용을 통해 규범과 조정 메커니즘이 어떻게 형성·유지·변화되는지를 분석합니다.</p>
+    </div>
+
+    <div class="about-block">
+      <h3>Why Modeling and Simulation</h3>
+      <p>To study media environments as dynamic systems, MERG Lab employs computational modeling and simulation. Agent-based models, network analysis, and media psychology frameworks allow us to formalize assumptions about individual behavior and systematically explore how environmental variation leads to divergent collective outcomes.</p>
+      <p class="kr">미디어 환경을 동적인 시스템으로 분석하기 위해 MERG Lab은 컴퓨테이셔널 모델링과 시뮬레이션을 활용합니다. 에이전트 기반 모델, 네트워크 분석, 미디어 심리 모델을 통해 개인의 판단 규칙을 형식화하고 환경 조건의 변화가 어떤 집합적 결과를 낳는지 체계적으로 탐구합니다.</p>
+    </div>
+
+    <div class="themes">
+      <h3>What We Study</h3>
+      <p style="font-size:0.9rem;color:var(--gray-700);line-height:1.85;margin-bottom:0.5rem;">Our research focuses on media environments not as passive channels of information, but as relational and adaptive systems that condition how individuals perceive uncertainty, form judgment criteria, and coordinate with others. Rather than isolating media effects at the individual level, we examine how network structures themselves function as environments that shape cognition, norms, and social order.</p>
+      <p style="font-size:0.85rem;color:var(--gray-500);line-height:1.85;margin-bottom:1.5rem;">MERG Lab은 미디어를 단순한 정보 전달 수단이 아니라, 개인의 인지와 판단을 형성하는 관계적·적응적 환경으로 개념화합니다. 개인의 태도 변화에 국한하지 않고, 네트워크 구조 자체가 하나의 환경으로 작동하며 판단 기준, 규범, 사회적 질서를 어떻게 만들어내는지에 주목합니다.</p>
+      <div class="theme-tags">
+        <span class="theme-tag">Networked Media Environments & Social Perception</span>
+        <span class="theme-tag">Judgmental Alignment & Norm Emergence</span>
+        <span class="theme-tag">Public Opinion Dynamics & Polarization</span>
+        <span class="theme-tag">Trust Formation & Relational Governance</span>
+      </div>
+    </div>
+
+    <div class="approach-text">
+      <h3>What This Approach Allows Us to See</h3>
+      <p>This approach moves beyond traditional media-effects research that focuses on short-term changes in opinions or attitudes. Instead, MERG Lab examines how media environments shape the ways individuals adaptively perceive, interpret, and act within their social worlds. By studying communication as an ongoing process of adaptation to networked environments, the lab seeks to advance a quantitative media ecology that captures the dynamic interplay between individuals, relationships, and social structures.</p>
+      <p class="kr">이러한 접근은 단기적인 태도나 의견 변화를 중심으로 해온 기존의 미디어 효과 연구를 넘어 미디어 환경이 개인이 세상을 인식하고 해석하며 행동하는 방식에 어떻게 지속적으로 영향을 미치는지를 탐구합니다. MERG Lab은 커뮤니케이션을 네트워크화된 환경에 대한 적응적 과정으로 이해하며, 개인·관계·사회 구조 간의 동적 상호작용을 분석하는 정량적 미디어 생태학 연구를 지향합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PEOPLE -->
+<section id="people">
+  <div class="container">
+    <div class="section-label">People</div>
+    <div class="section-title">Our Team</div>
+
+    <div class="people-category">
+      <h3>Director</h3>
+      <div class="person">
+        <div class="person-photo">
+          <img src="images/DSohn.jpg" alt="Dongyoung Sohn">
+        </div>
+        <div class="person-info">
+          <h4>Dongyoung Sohn</h4>
+
+          <p><strong>Dongyoung Sohn</strong> (Ph.D., The University of Texas at Austin) is a Professor in the Department of Media & Communication at Hanyang University in Seoul, Korea, where he has been a faculty member since 2011. Prior to joining Hanyang University, he held faculty positions at The Ohio State University in Columbus and the University of South Florida in Tampa, USA. He has also served as a Senior Research Fellow in the Department of Communication at the University of Vienna, Austria, and as a Visiting Fellow at the Oxford Internet Institute (OII), University of Oxford, UK. He is currently an affiliated faculty member of the Center for Computational Social Sciences (C2S2) at Hanyang University. His research focuses on the ecology of networked media, examining how individuals perceive, interpret, and adapt to their local social environments within digitally networked communication systems. Using computational and simulation-based approaches, his work investigates how micro-level interactions among individuals give rise to emergent macro-level phenomena, including information diffusion, public opinion dynamics, trust formation, and norm evolution.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="people-category">
+      <h3>Faculty Affiliate</h3>
+      <div class="person">
+        <div class="person-photo">
+          <img src="images/JLee.jpg" alt="Jayeon Lee">
+        </div>
+        <div class="person-info">
+          <h4>Jayeon Lee</h4>
+          <p><strong>Jayeon Lee</strong> (Ph.D., The Ohio State University) is an associate professor in the Department of Media & Communication, Hanyang University, Seoul, Korea. Before joining HYU, she was an associate professor at Gachon University, Korea. Her research programs center on the issues related to social media and changing media environments — how individuals utilize, interpret, and share various textual and audiovisual information available on digital platforms in forming perceptions and attitudes, and making decisions, and how characteristics of digital environments influence the processes.</p>
+        </div>
+      </div>
+      <div class="person">
+        <div class="person-photo">
+          <img src="images/JPark.jpg" alt="Jinwoo Lucian Park">
+        </div>
+        <div class="person-info">
+          <h4>Jinwoo Lucian Park</h4>
+
+          <p><strong>Jinwoo Lucian Park</strong> (Ph.D., Hanyang University) is an assistant professor in the Department of Media & Communication, Hanyang University, Seoul, Korea. Before joining HYU, he worked as an adjunct professor at Kyunghee University, Seoul, Korea and taught at Sungshin Women's University, Dankook University, and Kangwon National University in Korea. His research programs focus on the understanding of how public opinion is formed and changes in the networked communication environment like social media, especially from the public relations (PR) perspective.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="people-category">
+      <h3>External Faculty</h3>
+      <div class="person">
+        <div class="person-photo">
+          <img src="images/CLee.jpg" alt="Chul-joo Lee">
+        </div>
+        <div class="person-info">
+          <h4>Chul-joo "CJ" Lee</h4>
+
+          <p><strong>Chul-joo "CJ" Lee</strong> (Ph.D., The University of Pennsylvania) is an associate professor and graduate director in the Department of Communication at Seoul National University and holds an adjunct appointment in the Department of Communication at the University of Illinois at Urbana-Champaign. Lee's research focuses on the interplay between communication and social determinants of health. Lee is an Associate Editor for Journal of Communication. Additionally, he currently serves or has served on the editorial boards of some of the top outlets of the fields of communication and public health.</p>
+        </div>
+      </div>
+      <div class="person">
+        <div class="person-photo">
+          <img src="images/JChoi.jpg" alt="Jin-Ho Choi">
+        </div>
+        <div class="person-info">
+          <h4>Jin-Ho Choi</h4>
+
+          <p><strong>Jin-Ho Choi</strong> (Ph.D., Hanyang University) is currently a senior researcher at the Korea Press Foundation. He was formerly a postdoctoral research fellow at the Center for Computational Social Sciences (C2S2), Hanyang University-Seoul, Korea. His research focuses on explaining the changes in journalism, public opinion, and political communication in the digital environment using computational methods.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="people-category">
+      <h3>Post Doctoral Research Fellow</h3>
+      <div class="person">
+        <div class="person-photo">
+          <img src="images/SChoi.jpg" alt="Sung In Choi">
+        </div>
+        <div class="person-info">
+          <h4>Sung In Choi</h4>
+
+          <p><strong>Sung In Choi</strong> (Ph.D., Seoul National University) is currently a postdoctoral research fellow at MERG Lab and the Center for Computational Social Sciences (C2S2), Hanyang University-Seoul, Korea. Her research focuses on the social implications of digital media and platform usage, as well as finding innovative research methods for studying them.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="people-category">
+      <h3>Graduate Research Assistants</h3>
+      <div class="person">
+        <div class="person-photo">
+          <img src="images/SYoon.jpg" alt="Sujin Yoon">
+        </div>
+        <div class="person-info">
+          <h4>Sujin Yoon</h4>
+
+          <p><strong>Sujin Yoon</strong> (M.A., Arizona State University, M.A., Hanyang University) is currently a doctoral student at MERG Lab and serves as a research assistant jointly for the Center for Computational Social Sciences (C2S2), Hanyang University-Seoul, Korea. Her research interests are in exploring how group dynamics affect the patterns of public opinion in social media and applying computational methods to reinterpreting communication theories.</p>
+        </div>
+      </div>
+      <div class="person">
+        <div class="person-photo">
+          <img src="images/YKim.jpg" alt="Yoon-Jung Kim">
+        </div>
+        <div class="person-info">
+          <h4>Yoon-Jung Kim</h4>
+
+          <p><strong>Yoon-Jung Kim</strong> (B.S., Fu Jen Catholic University) is currently a master's student in the Department of Media & Communication and research assistant at MERG Lab and the Center for Computational Social Sciences (C2S2), Hanyang University, Seoul, Korea. Her research interests include media psychology, interpersonal communication, and advertising effectiveness.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="container">
+    <div class="section-label">Publications</div>
+    <div class="section-title">Selected Publications</div>
+
+    <ul class="pub-list">
+      <li class="pub-item"><span class="pub-year">2025</span><p class="pub-text">Sohn, D. When opinions polarize without persuasion: Modeling the dynamics of attitude-opinion convergence and decoupling. <em>Communication Research</em> (forthcoming).</p></li>
+      <li class="pub-item"><span class="pub-year">2025</span><p class="pub-text">Choi, S.-I., Cho, H.-C., Yoon, S., & Sohn, D. Intermedia dynamics between legacy news and cyberwrecker channels: A computational approach to attribution patterns in celebrity scandal coverage. <em>Journal of Cyber-Communication Academic Society</em> (in Korean), 42(3), 143-211.</p></li>
+      <li class="pub-item"><span class="pub-year">2025</span><p class="pub-text">Lee, J., & Sohn, D. Mapping media perceptions: Unveiling the attitude networks towards news media. <em>Journalism & Mass Communication Quarterly</em> (forthcoming).</p></li>
+      <li class="pub-item"><span class="pub-year">2024</span><p class="pub-text">Sohn, D., & Song, H. Computational research methods and the future of communication science. In <em>The Handbook of Communication Science</em> (in Korean), Seoul: Nanam Publishing Co.</p></li>
+      <li class="pub-item"><span class="pub-year">2023</span><p class="pub-text">Jeong, J., Yoon, S., Sohn, D., & Choi, Y.-S. Reading emotions in the digital age: A deep-learning approach to detecting anxiety during the COVID-19 pandemic through social media. <em>International Journal of Communication</em>, 17(2023): 5932-5953.</p></li>
+      <li class="pub-item"><span class="pub-year">2023</span><p class="pub-text">Sohn, D., & Choi, Y.-S. Silence in social media: A multilevel analysis of the network structure effects on participation disparity in Facebook. <em>Social Science Computer Review</em>, 41(5), 1767-1790.</p></li>
+      <li class="pub-item"><span class="pub-year">2023</span><p class="pub-text">Sohn, D. The age of connectivity: Network models for digital media and consumer research. In <em>Digital Advertising and Consumer</em> (in Korean), Seoul: eArticle.</p></li>
+      <li class="pub-item"><span class="pub-year">2022</span><p class="pub-text">Sohn, D. Spiral of silence in the social media era: A simulation approach to the interplay between social networks and mass media. <em>Communication Research</em>, 49(1), 139-166.</p></li>
+      <li class="pub-item"><span class="pub-year">2022</span><p class="pub-text">Choi, Y.-S., Kim, H., & Sohn, D. Mapping social distress: A computational approach to spatiotemporal distribution of anxiety. <em>Social Science Computer Review</em>, 40(3), 598-617.</p></li>
+      <li class="pub-item"><span class="pub-year">2021</span><p class="pub-text">Yoon, S., Choi, J., & Sohn, D. Why we remain silent: Socio-psychological factors influencing different types of silence in social media. <em>Korean Journal of Journalism and Communication Studies</em>, 65(4), 148-184.</p></li>
+      <li class="pub-item"><span class="pub-year">2020</span><p class="pub-text">Lee, J. Friending journalists on social media: Effects on perceived objectivity and intention to consume news. <em>Journalism Studies</em>, 21(15), 2096-2112.</p></li>
+      <li class="pub-item"><span class="pub-year">2020</span><p class="pub-text">Tanenboim-Weinblatt, K., & C.-j. Lee. Speaking across communication subfields. <em>Journal of Communication</em>, 70, 303-309.</p></li>
+      <li class="pub-item"><span class="pub-year">2019</span><p class="pub-text">Lee, C.-j., Kim, K., & Kang, B. A moderated mediation model of the relationship between media, social capital, and cancer knowledge. <em>Health Communication</em>, 34, 577-588.</p></li>
+      <li class="pub-item"><span class="pub-year">2019</span><p class="pub-text">Pena-y-Lillo, M., & Lee, C.-j. A communication inequalities approach to disparities in physical activity. <em>Journal of Health Communication</em>, 24, 111-120.</p></li>
+      <li class="pub-item"><span class="pub-year">2019</span><p class="pub-text">Lee, J., Sohn, D., & Choi, Y. A tool for spatio-temporal analysis of social anxiety with Twitter data. <em>Proceedings of the 34th ACM/SIGAPP Symposium On Applied Computing</em> (SAC 2019), 2120-2123.</p></li>
+      <li class="pub-item"><span class="pub-year">2019</span><p class="pub-text">Sohn, D., & Choi, S. Social embeddedness of persuasion: The effects of cognitive social structures on information credibility assessment and sharing in social media. <em>International Journal of Advertising</em>, 38(6), 824-844.</p></li>
+      <li class="pub-item"><span class="pub-year">2018</span><p class="pub-text">Lee, C.-J., Nagler, R., & Wang, N. Source-specific exposure to contradictory media information: Documenting prevalence and effects on adverse cognitive and behavioral outcomes. <em>Health Communication</em>, 33, 453-461.</p></li>
+      <li class="pub-item"><span class="pub-year">2018</span><p class="pub-text">Lee, J. & Xu, W. The more attacks, the more retweets: Trump's and Clinton's agenda setting on Twitter. <em>Public Relations Review</em>, 44(2), 201-213.</p></li>
+      <li class="pub-item"><span class="pub-year">2017</span><p class="pub-text">Choi, J., Park, J., & Sohn, D. Social media and news perception: A study on the factors affecting news credibility and sharing intention in social media. <em>Korean Journal of Broadcasting and Telecommunication Studies</em> (in Korean), 31(1), 184-219.</p></li>
+      <li class="pub-item"><span class="pub-year">2017</span><p class="pub-text">Sohn, D. The science of social change: Toward an understanding of generative communication processes. In <em>Communication Studies in the Data Age</em> (in Korean), Seoul: Communication Books.</p></li>
+      <li class="pub-item"><span class="pub-year">2016</span><p class="pub-text">Lee, C.-j., & Sohn, D. Mapping the social capital research in communication: A bibliometric analysis. <em>Journalism & Mass Communication Quarterly</em>, 93(4), 728-749.</p></li>
+      <li class="pub-item"><span class="pub-year">2016</span><p class="pub-text">Sohn, D., & Geidner, N. Collective dynamics of the spiral of silence: The role of ego network size. <em>International Journal of Public Opinion Research</em>, 28(1), 25-45.</p></li>
+      <li class="pub-item"><span class="pub-year">2016</span><p class="pub-text">Sohn, D. Communication and emergence: Understanding collective social phenomena. In <em>Expanding the Landscape of Communication Research</em> (in Korean), Seoul: Nanam Publishing Co.</p></li>
+      <li class="pub-item"><span class="pub-year">2015</span><p class="pub-text">Lee, C.-j., & Kam, J. Why does social capital matter in health communication campaigns? <em>Communication Research</em>, 42(4), 459-481.</p></li>
+      <li class="pub-item"><span class="pub-year">2015</span><p class="pub-text">Lee, J. The double-edged sword: The Effects of journalists' social media activities on audience perceptions of journalists and their news products. <em>Journal of Computer-mediated Communication</em>, 20(3), 312–329.</p></li>
+      <li class="pub-item"><span class="pub-year">2015</span><p class="pub-text">Kim, J., Hwang, S., & Sohn, D. The influence of crisis history on public's responsibility attribution and communication message evaluation. <em>The Korean Journal of Advertising and Public Relations</em> (in Korean), 17(3), 33-64.</p></li>
+      <li class="pub-item"><span class="pub-year">2014</span><p class="pub-text">Yoon, S., & Sohn, D. The effects of social anonymity on the perception and trust of online community: The role of perceived homophily and empathy. <em>Journal of Cyber-Communication Academic Society</em> (in Korean), 31(4), 189-224.</p></li>
+      <li class="pub-item"><span class="pub-year">2014</span><p class="pub-text">Lee, C.-j. The role of social capital in health communication campaigns: The case of the National Youth Anti-Drug Media Campaign. <em>Communication Research</em>, 41(2), 208-235.</p></li>
+      <li class="pub-item"><span class="pub-year">2014</span><p class="pub-text">Sohn, D., & Choi, S. Measuring expected interactivity: Scale development and validation. <em>New Media & Society</em>, 16(5), 856-870.</p></li>
+      <li class="pub-item"><span class="pub-year">2014</span><p class="pub-text">Lee, J. Are some people less influenced by others' opinions? The role of internal political self-efficacy and need for cognition in impression formation on SNS. <em>Cyberpsychology, Behavior, and Social Networking</em>, 17(9), 571–577.</p></li>
+      <li class="pub-item"><span class="pub-year">2014</span><p class="pub-text">Sohn, D. Coping with information in social media: The effects of network structure and knowledge on information value perception. <em>Computers in Human Behavior</em>, 32(1), 145-151.</p></li>
+      <li class="pub-item"><span class="pub-year">2013</span><p class="pub-text">Lee, M., & Sohn, D. The effects of commercial sponsorship of power-blogs on information credibility and product purchase intention. <em>The Korean Journal of Advertising</em> (in Korean), 24(7), 67-86.</p></li>
+      <li class="pub-item"><span class="pub-year">2013</span><p class="pub-text">Choi, S., & Sohn, D. Factors affecting consumers' purchase intention in social commerce: The role of time constraint and the quantity of products sold. <em>The Korean Journal of Advertising</em> (in Korean), 24(2), 71-88.</p></li>
+      <li class="pub-item"><span class="pub-year">2012</span><p class="pub-text">Hwang, S., Sohn, D., Cho, Y., & Park, S. <em>Improving PR System for Managing the Government-Public Relationship</em> (in Korean), Seoul, Korea: Communication Books.</p></li>
+      <li class="pub-item"><span class="pub-year">2011</span><p class="pub-text">Sohn, D. Anatomy of interaction experience: Distinguishing sensory, semantic, and behavioral dimensions of interactivity. <em>New Media & Society</em>, 13(8), 1320-1335.</p></li>
+      <li class="pub-item"><span class="pub-year">2011</span><p class="pub-text">Kim, Y., Sohn, D., & Choi, S. Cultural difference in motivations for using social network sites: A comparative study of American and Korean college students. <em>Computers in Human Behavior</em>, 27(1), 365-372.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="container">
+    <div class="section-label">Courses</div>
+    <div class="section-title">Graduate Courses</div>
+
+    <div class="course-grid">
+      <div class="course-card">
+        <h4>Communication Research Methods Seminar</h4>
+        <p>A graduate seminar that introduces social scientific research methods in communication and guides students in applying these methods to real-world communication problems. The course emphasizes developing research questions, linking theory and method, and formulating students' own research projects.</p>
+      </div>
+      <div class="course-card">
+        <h4>Persuasive Communication Seminar</h4>
+        <p>A graduate seminar exploring classic and contemporary theories and research on persuasive communication. Students examine how persuasion operates across different media contexts and apply theoretical frameworks to analyze real-world communication cases and develop original research ideas.</p>
+      </div>
+      <div class="course-card">
+        <h4>Communication Network Analysis</h4>
+        <p>A graduate seminar focused on the theory and application of network analysis for understanding communication-related social phenomena. Students learn to analyze relational data and extract insights from communication networks using R packages such as igraph and statnet.</p>
+      </div>
+      <div class="course-card">
+        <h4>Introduction to Computational Social Sciences</h4>
+        <p>An interdisciplinary omnibus course offered by faculty affiliated with the Center for Computational Social Sciences (C2S2). The course introduces a broad range of computational approaches for studying social phenomena, including data collection, modeling, and large-scale data analysis.</p>
+      </div>
+      <div class="course-card">
+        <h4>Media Psychology Seminar</h4>
+        <p>A graduate seminar examining psychological processes underlying mediated communication in modern societies. Students engage with key theoretical and empirical research on media effects, media representations, and mediated social interaction.</p>
+      </div>
+      <div class="course-card">
+        <h4>Collective Behavior & Communication</h4>
+        <p>A graduate seminar on collective social phenomena from both classical perspectives and contemporary complexity science approaches. The course introduces agent-based modeling and simulation as tools for studying information diffusion, public opinion dynamics, polarization, and norm emergence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Contact</div>
+    <div class="section-title">Get in Touch</div>
+
+    <div class="contact-grid">
+      <div>
+        <div class="contact-info-block">
+          <h4>Address</h4>
+          <p>222 Wangsimni-ro, Seoul, Korea 04763<br>Hanyang University</p>
+        </div>
+        <div class="contact-info-block">
+          <h4>Phone</h4>
+          <p>+82-2-2220-0855</p>
+        </div>
+        <div class="contact-info-block">
+          <h4>Fax</h4>
+          <p>+82-2-2281-4554</p>
+        </div>
+        <div class="contact-info-block">
+          <h4>Email</h4>
+          <p><a href="mailto:dysohn@hanyang.ac.kr">dysohn@hanyang.ac.kr</a></p>
+        </div>
+        <div class="contact-info-block">
+          <h4>Affiliations</h4>
+          <p><a href="https://www.hanyang.ac.kr/" target="_blank">Hanyang University</a><br>
+          <a href="http://comm.hanyang.ac.kr" target="_blank">Department of Media & Communication</a></p>
+        </div>
+      </div>
+      <div class="contact-message">
+        <h4>For Prospective Students and Researchers</h4>
+        <p>MERG Lab welcomes inquiries from students and researchers interested in media ecology, network analysis, and computational modeling of communication processes. If you would like to learn more about the lab or discuss potential research interests, please feel free to contact us.</p>
+        <p class="kr">MERG Lab은 미디어 생태학, 네트워크 분석, 계산적 모델링 기반 커뮤니케이션 연구에 관심 있는 학생과 연구자의 문의를 환영합니다. 연구실 활동이나 연구 주제에 대해 궁금한 점이 있다면 연락해 주세요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 MERG LAB. All Rights Reserved. | <a href="https://www.hanyang.ac.kr/" target="_blank">Hanyang University</a></p>
+</footer>
+
+<script>
+// Animated network canvas
+const canvas = document.getElementById('networkCanvas');
+const ctx = canvas.getContext('2d');
+let nodes = [], w, h;
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  w = canvas.width = rect.width;
+  h = canvas.height = rect.height;
+}
+
+// Emergent network with tipping point cascades
+let edges = [];
+let frame = 0;
+const TIPPING_THRESHOLD = 4; // connections needed for emergence
+
+function init() {
+  resize();
+  nodes = [];
+  edges = [];
+  const count = Math.floor((w * h) / 12000);
+  for (let i = 0; i < count; i++) {
+    nodes.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      r: Math.random() * 1.5 + 1.5,
+      brightness: 0.25,
+      emerged: false,
+      emergeGlow: 0
+    });
+  }
+  frame = 0;
+}
+
+function animate() {
+  ctx.clearRect(0, 0, w, h);
+  frame++;
+
+  // Move nodes gently
+  for (let n of nodes) {
+    n.x += n.vx;
+    n.y += n.vy;
+    if (n.x < 10 || n.x > w - 10) n.vx *= -1;
+    if (n.y < 10 || n.y > h - 10) n.vy *= -1;
+    n.brightness = Math.max(0.25, n.brightness - 0.001);
+    n.emergeGlow = Math.max(0, n.emergeGlow - 0.003);
+    if (n.emergeGlow <= 0) n.emerged = false;
+  }
+
+  // Form new connections
+  if (frame % 6 === 0) {
+    const src = Math.floor(Math.random() * nodes.length);
+    const candidates = [];
+    for (let j = 0; j < nodes.length; j++) {
+      if (j === src) continue;
+      const dx = nodes[src].x - nodes[j].x;
+      const dy = nodes[src].y - nodes[j].y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 130) {
+        const exists = edges.some(e => (e.a === src && e.b === j) || (e.a === j && e.b === src));
+        if (!exists) candidates.push({ idx: j, d: d });
+      }
+    }
+    if (candidates.length > 0) {
+      const pick = candidates[Math.floor(Math.random() * candidates.length)];
+      edges.push({ a: src, b: pick.idx, life: 1.0, growing: true, growProgress: 0 });
+      nodes[src].brightness = Math.min(0.8, nodes[src].brightness + 0.1);
+      nodes[pick.idx].brightness = Math.min(0.8, nodes[pick.idx].brightness + 0.1);
+    }
+  }
+
+  // Update edges
+  for (let e of edges) {
+    if (e.growing) {
+      e.growProgress = Math.min(1.0, e.growProgress + 0.025);
+      if (e.growProgress >= 1.0) e.growing = false;
+    } else {
+      e.life -= 0.0012;
+    }
+  }
+  edges = edges.filter(e => e.life > 0);
+
+  // Count connections per node
+  const conn = new Array(nodes.length).fill(0);
+  for (let e of edges) { conn[e.a]++; conn[e.b]++; }
+
+  // Tipping point: when a node crosses threshold, cascade to neighbors
+  for (let i = 0; i < nodes.length; i++) {
+    if (conn[i] >= TIPPING_THRESHOLD && !nodes[i].emerged) {
+      nodes[i].emerged = true;
+      nodes[i].emergeGlow = 1.0;
+      nodes[i].brightness = 1.0;
+      // Cascade: boost neighbors subtly
+      for (let e of edges) {
+        let neighbor = -1;
+        if (e.a === i) neighbor = e.b;
+        else if (e.b === i) neighbor = e.a;
+        if (neighbor >= 0) {
+          nodes[neighbor].brightness = Math.min(0.9, nodes[neighbor].brightness + 0.15);
+          nodes[neighbor].emergeGlow = Math.max(nodes[neighbor].emergeGlow, 0.4);
+        }
+      }
+    }
+  }
+
+  // Draw edges
+  for (let e of edges) {
+    const a = nodes[e.a], b = nodes[e.b];
+    const progress = e.growing ? e.growProgress : 1.0;
+    // Emerged edges are brighter
+    const emergedBoost = (nodes[e.a].emergeGlow > 0 && nodes[e.b].emergeGlow > 0) ? 0.15 : 0;
+    const alpha = Math.min(0.4, e.life * 0.3 + emergedBoost);
+    const ex = a.x + (b.x - a.x) * progress;
+    const ey = a.y + (b.y - a.y) * progress;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(ex, ey);
+    ctx.strokeStyle = `rgba(120,180,240,${alpha})`;
+    ctx.lineWidth = emergedBoost > 0 ? 1.0 : 0.7;
+    ctx.stroke();
+  }
+
+  // Draw nodes
+  for (let i = 0; i < nodes.length; i++) {
+    const n = nodes[i];
+    const r = n.r + (conn[i] > 0 ? 0.4 : 0);
+    const b = Math.min(0.75, n.brightness);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(160,200,245,${b})`;
+    ctx.fill();
+    // Subtle emerge indicator: slightly larger, brighter dot
+    if (n.emergeGlow > 0.1) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 1.5, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(180,215,250,${n.emergeGlow * 0.25})`;
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+init();
+animate();
+window.addEventListener('resize', resize);
+
+// Nav scroll effect
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  const isScrolled = window.scrollY > 50;
+if (isScrolled && !nav.classList.contains('scrolled')) nav.classList.add('scrolled');
+else if (!isScrolled && nav.classList.contains('scrolled')) nav.classList.remove('scrolled');
+});
+
+// Mobile toggle
+const toggle = document.getElementById('navToggle');
+const links = document.getElementById('navLinks');
+toggle.addEventListener('click', () => links.classList.toggle('open'));
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => links.classList.remove('open'));
+});
+
+// Active nav highlight
+const sections = document.querySelectorAll('section');
+const navAs = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) cur = s.id;
+  });
+  navAs.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + cur) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
